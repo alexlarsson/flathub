@@ -1,0 +1,60 @@
+{
+  "app-id": "io.github.Pithos",
+  "runtime": "org.gnome.Platform",
+  "runtime-version": "3.24",
+  "sdk": "org.gnome.Sdk",
+  "command": "pithos",
+  "finish-args": [
+    "--share=ipc",
+    "--share=network",
+    "--socket=x11",
+    "--socket=wayland",
+    "--socket=pulseaudio",
+
+    "--env=SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt",
+
+    "--env=GST_PLUGIN_PATH_1_0=/app/lib/gstreamer-1.0",
+    "--talk-name=org.gtk.vfs",
+    "--talk-name=org.gtk.vfs.*",
+
+    "--env=DCONF_USER_CONFIG_DIR=.config/dconf",
+    "--filesystem=xdg-run/dconf",
+    "--filesystem=~/.config/dconf:ro",
+    "--talk-name=ca.desrt.dconf",
+    "--talk-name=org.freedesktop.secrets",
+
+    "--talk-name=org.freedesktop.Notifications",
+
+    "--talk-name=org.gnome.SettingsDaemon",
+    "--talk-name=org.mate.SettingsDaemon",
+
+    "--talk-name=org.gnome.ScreenSaver",
+    "--talk-name=org.cinnamon.ScreenSaver",
+    "--talk-name=org.freedesktop.ScreenSaver",
+    "--talk-name=com.canonical.Unity.Session",
+
+    "--own-name=org.mpris.MediaPlayer2.pithos",
+    "--own-name=net.kevinmehall.Pithos",
+    "--filesystem=/tmp"
+  ],
+  "modules": [
+    {
+      "name": "gst-libav",
+      "config-opts": [ "--disable-gtk-doc", "--with-system-libav" ],
+      "cleanup": [ "*.la", "/share/gtk-doc" ],
+      "sources": [{
+        "type": "archive",
+        "url": "https://gstreamer.freedesktop.org/src/gst-libav/gst-libav-1.8.3.tar.xz",
+        "sha256": "9006a05990089f7155ee0e848042f6bb24e52ab1d0a59ff8d1b5d7e33001a495"
+      }],
+      "modules": [ "org.ffmpeg.FFmpeg.json" ]
+    },
+    {
+      "name": "pithos",
+      "sources": [{
+        "type": "git",
+        "url": "https://github.com/pithos/pithos.git"
+      }]
+    }
+  ]
+}
